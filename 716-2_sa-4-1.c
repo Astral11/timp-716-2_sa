@@ -1,103 +1,97 @@
+#include <stdlib.h>
 #include <stdio.h>
-#include<stdlib.h>
 
-typedef struct node{
-        int value;
-        struct node *next;
-} node;
+typedef struct list { 
+	int value;
+	struct list *next;
+	struct list *prev;
+} list;
 
-node *head = NULL;
-node *tail = NULL;
-int isEmpty()
+list *head=NULL;
+list *tail=NULL; 
+int init (int date)
 {
-        if (head==NULL) return 1;
-        else return 0;
+	list *tmp =(list*)malloc(sizeof(list));
+	tmp->value = date;
+	tmp->next = NULL;
+	tmp->prev = NULL;
+	head = tmp;
+	tail = tmp;
+}
+int isEmpty() //Проверка на пустоту
+{ 
+	if ((head==NULL)&&(tail==NULL)) //Проверяем что head и tail равны NULL
+		return 1; 
+	else
+		return 0; 
+} 
+void insertEnd (int date) //Добавление элементов 
+{
+	if (isEmpty()==1) 
+		init (date);
+	else
+	{
+		list *tmp =(list*)malloc(sizeof(list)); 
+		tmp->value=date;  
+		tmp->next=NULL;
+		tmp->prev=tail; 
+		tail=tmp; 
+		tmp->prev->next=tmp; 
+	}
 }
 
-void init(int value)
-{
-        struct node *tmp;
-        tmp=(node*)malloc(sizeof(node));
-        tmp->value=value;
-        tmp->next=NULL;
-        head=tmp;
-        tail=tmp;
-}
-void push(int data)
-{
-        if (isEmpty()==1) init(data);
-        else
-        {
-                struct node *tmp=(node*)malloc(sizeof(node));
-                tmp->value=data;
-                tmp->next=head;
-                head=tmp;
-        }
-}
+void insertList() 
+{ 
+	list *tmp=head; 
+ 
+	while (tmp!=NULL) 
+	{  
 
-void get_posled()
+		printf("%d ",tmp->value);
+                tmp=tmp->next; 
+	}
+	
+} 
+	int  delit() // Удаление
 {
-        if (isEmpty()==0)
-        {
-                struct node *tmp=head;
-                printf("%d", tmp->value);
-                printf("\n");
-        }
-}
-
-void get_out ()
-{
-if (isEmpty()==0)
-{
-        node *tmp=head;
-        printf("%d",tmp->value);
-        while (tmp->next!=NULL)
-        {
-                tmp=tmp->next;
-                printf(" ");
-                printf("%d",tmp->value);
-
-        }
-                printf("\n");
-}
-}
-
-void remove_posled()
-{
-        struct node *tmp;
-        if (head != NULL)
-        {
-                tmp=head;
-                head=tmp->next;
+	if (isEmpty())
+	{return 0;} 
+		list *tmp=head;
+        if(tmp==tail) 
+        {      
+		head=NULL;
+		tail=NULL;
                 free(tmp);
-        }
-
+                return 1;
+	}
+               list *tmp1=NULL;
+               tmp1=tmp->next;
+               free(tmp); 
+               head=tmp1;
+               return 1;
 }
 
-void delete(node **head)
-{
-        struct node *prev=NULL;
-        while((*head)->next)
-        {
-                prev = *head;
-                *head = (*head)->next;
-                free(prev);
-        }
-        free(*head);
-}
+	
 int main()
 {
-        int n=0,val=0;
-        scanf("%d",&n);
-        for (int i=0; i<n;i++)
-        {
-                scanf("%d", &val);
-                push(val);
-        }
-        get_out();
-        remove_posled();
-        get_out();
-        get_posled();
-        delete(&head);
-        return 0;
+	int n, date; 
+
+	scanf("%d",&n);
+        scanf ("%d", &date); 
+ 	init(date);
+
+	for (int i=0; i<n-1; i++)
+		{
+		
+	scanf("%d", &date);
+   	insertEnd(date);}
+ 	insertList();
+	printf("\n");
+	for (int i=0;i<n;i++)
+	{
+	delit();
+	insertList();
+	printf("\n");
+	}
+	return 0; 
 }
